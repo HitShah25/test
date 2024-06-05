@@ -6,9 +6,47 @@
     <title>Document</title>
 </head>
 <body>
-<form action="signup.php" method="post">
-    email<input type="email" name="email" value=""><br>
-    <button type="submit" name="send">send</button>
-</form>
+    <a href="registration.php"> Registration</a><br>
+    <?php
+    if(!isset($_GET['otp']))
+    {
+    ?>
+    
+    <a href="index.php?otp=1">Login using OTP</a><br>
+    <center>
+    
+        <form action="handle_login.php" method="post">
+            <label for="email">Email :</label>
+            <input type="email" name="email" placeholder="Enter your email" required><br>
+            
+            <label for="password">Password :</label>
+            <input type="password" name="password" placeholder="Enter your password" required><br>
+            
+            <button type="submit" name="login_password">LOGIN</button>
+        </form>
+    <?php 
+    }
+    elseif($_GET['otp'] == 1)
+    {
+        ?>
+        <a href="index.php">Login using Password</a><br>
+        <center>
+        <form action="handle_login.php" method="post">
+            <label for="email">Email :</label>
+            <input type="email" name="email" placeholder="Enter your email" required><br>
+            <button type="submit" name="login_otp">LOGIN</button>
+        </form>
+        <form>
+            <label for="otp">One time password :</label>
+            <input type="number" name="otp" placeholder="Enter your one time password"><br>
+            <?php echo $_SESSION['otp'];?>
+            
+        </form>
+            
+
+        <?php
+    }
+    ?>
+    </center>
 </body>
 </html>
