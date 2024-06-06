@@ -30,27 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
             $user_id = $row['id'];
             $db_otp = $row['token'];
             $name = $row['name'];
-            $is_admin=$row['is_admin'];
+            $is_admin = $row['is_admin'];
         }
 
         if ($db_otp == $otp) {
             session_start();
             $_SESSION['user_id'] = $user_id;
             $_SESSION['name'] = $name;
-            if($is_admin)
-            {
+            if ($is_admin) {
                 //admin
                 echo "<script>alert('loginned succefully');window.location.href='adminpanel.php';</script>";
                 //set token free for next time
-                $otp_free="update users set token='0', last_login=NOW() where id='$user_id';";
-                $res_otp_free=$conn->query($otp_free);
-    
-            }
-            else{
-            echo "<script>alert('loginned succefully');window.location.href='login.php';</script>";
-            //set token free for next time
-            $otp_free="update users set token='0' where id='$user_id';";
-            $res_otp_free=$conn->query($otp_free);
+                $otp_free = "update users set token='0', last_login=NOW() where id='$user_id';";
+                $res_otp_free = $conn->query($otp_free);
+            } else {
+                echo "<script>alert('loginned succefully');window.location.href='login.php';</script>";
+                //set token free for next time
+                $otp_free = "update users set token='0' where id='$user_id';";
+                $res_otp_free = $conn->query($otp_free);
             }
         } else {
             echo "<script>alert('OTP not matched');window.location.href='handle_otp.php?email=$email';</script>";

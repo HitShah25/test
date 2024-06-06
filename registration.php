@@ -11,13 +11,13 @@
     <form action="handle_signup.php" method="post">
         <label for="name">Name :</label>
         <input type="text" id="name" name="name" required><br>
-        
+
         <label for="email">Email :</label>
         <input type="email" name="email" value="" required><br>
-        
+
         <label for="password">Password :</label>
         <input type="password" name="password" value="" required><br>
-        
+
         <button type="submit" name="send">send</button>
     </form>
 </body>

@@ -15,7 +15,4 @@ if (isset($_GET['token'])) {
     } else {
         echo "<script>alert('Invalid or expired token!');</script>";
     }
-    
 }
-
-?>
