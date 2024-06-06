@@ -23,13 +23,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_password'])) {
             $user_id=$row['id'];
             $db_password=$row['password'];
             $name=$row['name'];
+            $is_admin=$row['is_admin'];
         }
     
         if ($password==$db_password) {
         session_start();
         $_SESSION['user_id']=$user_id;
         $_SESSION['name']=$name;
-        echo "<script>alert('loginned succefully');window.location.href='login.php';</script>";
+        $update="UPDATE users SET last_login = NOW() where id=$user_id";
+        $res_update=$conn->query($update);
+        if($is_admin)
+        {
+
+            echo "<script>alert('loginned succefully');window.location.href='adminpanel.php';</script>";
+        }
+        else
+        {
+            echo "<script>alert('loginned succefully');window.location.href='login.php';</script>";
+        }
         }
         else
         {
@@ -42,9 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_password'])) {
     }
     }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_otp'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_otp'])) {
+    $otp_to_email=$conn->real_escape_string($_POST['email']);
+    
+
     $otp=rand(100000,1000000);
-    $_SESSION['otp']=$otp;
     $mail = new PHPMailer(true);
     $mail->isSMTP();
     $mail->Host = $_ENV['SMTP_HOST'];
@@ -54,10 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_otp'])) {
     $mail->SMTPSecure = $_ENV['SMTP_SECURE'];
     $mail->Port = $_ENV['SMTP_PORT'];
     $mail->setFrom('shahhit18@gmail.com');
-    $mail->addAddress($_POST['email']);
+    $mail->addAddress($otp_to_email);
     $mail->isHTML(true);
     $mail->Subject = "One time password";
     $mail->Body = "One time password is : $otp";
     $mail->send();
-    echo "<script>window.location.href='index.php?otp=1';</script>";
+
+    $otp_store="update users set token='$otp' where email='$otp_to_email' and token='0' and is_user_verified='1';";
+    $res_otp_store=$conn->query($otp_store);
+    echo "<script>window.location.href='handle_otp.php?email=$otp_to_email';</script>";
 }

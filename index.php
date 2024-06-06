@@ -35,14 +35,7 @@
             <label for="email">Email :</label>
             <input type="email" name="email" placeholder="Enter your email" required><br>
             <button type="submit" name="login_otp">LOGIN</button>
-        </form>
-        <form>
-            <label for="otp">One time password :</label>
-            <input type="number" name="otp" placeholder="Enter your one time password"><br>
-            <?php echo $_SESSION['otp'];?>
-            
-        </form>
-            
+        </form>            
 
         <?php
     }
